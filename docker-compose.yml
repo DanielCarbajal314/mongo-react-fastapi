@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+    database:
+        image: mongo
+        restart: always
+        environment:
+            - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+            - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
+            - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+        ports:
+            - 27017:27017
+        expose:
+            - 27017
+    server:
+      build: 
+        context: backend
+      env_file:
+        - .env
+      volumes:
+        - ./backend/src:/code/src
+      expose:
+        - ${API_SERVER_PORT}
+      ports:
+        - ${API_SERVER_PORT}:${API_SERVER_PORT}
